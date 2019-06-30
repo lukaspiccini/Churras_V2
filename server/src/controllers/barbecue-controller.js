@@ -37,7 +37,7 @@ exports.updateBarbecue = async (req, res, next) => {
     
     try {
         let result = await Barbecue.findByIdAndUpdate(_id, barbecue);
-        res.status(204).send(result);
+        res.status(204).send();
     } catch (err) {
         res.status(500).send(err);
     }
@@ -48,7 +48,7 @@ exports.deleteBarbecue = async (req, res, next) => {
 
     try {
         let result = await Barbecue.findByIdAndDelete(_id);
-        res.status(204).send(result);
+        res.status(204).send();
     } catch (err) {
         res.status(500).send(err);
     }

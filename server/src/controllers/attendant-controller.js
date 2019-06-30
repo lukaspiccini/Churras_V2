@@ -47,8 +47,8 @@ exports.updateAttendant = async (req, res, next) => {
     const attendant = new Attendant(req.body);
     
     try {
-        const result = await Attendant.findByIdAndUpdate(_id, attendant).exec();
-        res.status(204).send(result);
+        await Attendant.findByIdAndUpdate(_id, attendant).exec();
+        res.status(204).send();
     } catch (err) {
         console.log(err)    
         res.status(500).send(err);
@@ -59,8 +59,14 @@ exports.deleteAttendant = async (req, res, next) => {
     const _id = req.params.id;
 
     try {
-        let result = await Attendant.findByIdAndDelete(_id);
-        res.status(204).send(result);
+        let result = await Barbecue.findOne({attendants: _id}).populate('attendants').exec();
+        result.attendants.pull({_id: _id});
+        result.save();
+
+        await Attendant.findByIdAndDelete(_id);
+        console.log(result);
+
+        res.status(204).send();
     } catch (err) {
         res.status(500).send(err);
     }
