@@ -7,6 +7,8 @@ let BarbecueSchema = new Schema({
     description: String,
     attendants: [{type: Schema.Types.ObjectId, ref: 'Attendant'}],
     observations: String,
+    price_with_drinks: Number,
+    price_without_drinks: Number
 });
 
 module.exports = mongoose.model('Barbecue', BarbecueSchema);

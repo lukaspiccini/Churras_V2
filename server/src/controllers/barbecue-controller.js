@@ -13,11 +13,11 @@ exports.getBarbecueById = async (req, res, next) => {
     const _id = req.params.id;
 
     try {
-        let result = await Barbecue.findById(_id);
+        let result = await Barbecue.findById(_id).populate('attendants');
         res.status(200).send(result);
     } catch (err) {
         res.status(500).send(err);
-    }
+    }                           
 }
 
 exports.createBarbecue = async (req, res, next) => {
