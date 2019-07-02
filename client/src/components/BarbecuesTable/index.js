@@ -1,18 +1,18 @@
 import React from 'react'
-import axios from 'axios'
 
 import { Table, Row, HeadItem, Item } from './style'
 import TrincaButton from '../../objects/TrincaButton/index'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import BarbecueService from '../../services/BarbecueService'
 
 const BarbecuesTable = ({items, action, refetch}) => {
     async function remove(barbecueId) {
         try {
-            await axios.delete(`http://localhost:3000/api/barbecue/${barbecueId}`)
-            const result = await axios.get('http://localhost:3000/api/barbecue');
+            await BarbecueService.DeleteBarbecue(barbecueId)
+            const result = await BarbecueService.GetAllBarbecues();
     
-            refetch(result.data);
+            refetch(result);
 
             alert('Churras apagado com sucesso!')
         } catch (err) {
@@ -22,8 +22,8 @@ const BarbecuesTable = ({items, action, refetch}) => {
 
     async function setItem(barbecueId) {
         try {
-            const result = await axios.get(`http://localhost:3000/api/barbecue/${barbecueId}`);
-            action(result.data);
+            const result = await BarbecueService.GetBarbecueById(barbecueId);
+            action(result);
         } catch (err) {
             alert(err);
         }

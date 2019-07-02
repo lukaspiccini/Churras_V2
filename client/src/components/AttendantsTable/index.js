@@ -1,10 +1,11 @@
 import React from 'react'
-import axios from 'axios'
 
 import { Table, Row, HeadItem, Item } from './style'
 import TrincaButton from '../../objects/TrincaButton/index'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import AttendanceService from '../../services/AttendantService'
+import BarbecueService from '../../services/BarbecueService'
 
 const BarbecuesTable = ({barbecue, refetch}) => {
 
@@ -14,12 +15,12 @@ const BarbecuesTable = ({barbecue, refetch}) => {
 
     async function deleteAttendant(attendantId) {
         try {
-            axios.delete(`http://localhost:3000/api/attendant/${attendantId}`);
-            const result = await axios.get(`http://localhost:3000/api/barbecue/${barbecue._id}`)
+            await AttendanceService.DeleteAttendant(attendantId);
+            const result = await BarbecueService.GetBarbecueById(barbecue._id)
 
-            refetch(result.data);
+            refetch(result);
 
-            alert('Participante apagado com sucesso');
+            alert('Participante removido com sucesso');
         } catch(err) {
             alert(err);
         }

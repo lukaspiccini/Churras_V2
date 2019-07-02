@@ -1,47 +1,49 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 
-import { Background, Wrapper, ModalTitle, Body, FlexItem, Observation, Footer } from './style'
+import { Background, Wrapper, ModalTitle, Body, FlexItem } from './style'
 import TrincaInput from '../../objects/TrincaInput/index'
 import TrincaButton from '../../objects/TrincaButton/index'
+import AttendantService from '../../services/AttendantService'
 
-const AttendandModal = ({action}) => {
-    const [when, setWhen] = useState()
-    const [why, setWhy] = useState()
-    const [observation, setObservation] = useState()
-    const [withDrinks, setWithDrinks] = useState()
+const AttendandModal = ({action, id}) => {
+    const [name, setName] = useState('')
+    const [value, setValue] = useState(0)
+    const [paid, setPaid] = useState(false)
+    const [withDrinks, setWithDrinks] = useState(false)
 
-    function handleWhenChange(event) {
-        setWhen(event.target.value);
+    function handleNameChange(event) {
+        setName(event.target.value);
     }
     
-    function handleWhyChange(event) {
-        setWhy(event.target.value);
+    function handleValueChange(event) {
+        setValue(event.target.value);
     }
 
-    function handleObservationChange(event) {
-        setObservation(event.target.value);
+    function handlePaidChange(event) {
+        setPaid(!paid);
     }
 
-    async function saveBarbecue() {
-        // try {
-        //     await axios.post('http://localhost:3000/api/attendant',{
-        //         date: when,
-        //         description: why,
-        //         observations: observation,
-        //         price_with_drinks: withDrinks,
-        //         price_without_drinks: withoutDrinks
-        //     })
+    function handleWithDrinksChange(event) {
+        setWithDrinks(!withDrinks);
+    }
 
-        //     const result = await axios.get('http://localhost:3000/api/barbecue');
+    async function saveAttendant() {
+        try {
+            const attendant = {
+                _barbecueId: id,
+                name: name,
+                value: parseInt(value),
+                paid: paid,
+                with_drinks: withDrinks
+            }
 
-        //     refetch(result.data);
-        //     action(false);
+            await AttendantService.AddAttendant(attendant)
+            action(false);
 
-        //     alert('Participante adicionado com sucesso!');
-        // } catch (err) {
-        //     alert(err);
-        // }
+            alert('Participante adicionado com sucesso!');
+        } catch (err) {
+            alert(err);
+        }
     }
 
     return (
@@ -52,27 +54,27 @@ const AttendandModal = ({action}) => {
 
                     <FlexItem>
                         <span>Nome</span>
-                        <TrincaInput type="text" onChange={handleWhenChange}></TrincaInput>
+                        <TrincaInput type="text" onChange={handleNameChange}></TrincaInput>
                     </FlexItem>
 
                     <FlexItem>
                         <span>Valor da contribuição</span>
-                        <TrincaInput type="number" onChange={handleWhyChange}></TrincaInput>
+                        <TrincaInput type="number" onChange={handleValueChange}></TrincaInput>
 
                         <span>Pago:</span>
-                        <input type="checkbox" onChange={handleObservationChange}></input>
+                        <input type="checkbox" onChange={handlePaidChange} checked={paid}></input>
                     </FlexItem>
 
                     <FlexItem>
                         <span>Com bebida</span>
-                        <input type="checkbox" onChange={handleObservationChange}></input>
+                        <input type="checkbox" onChange={handleWithDrinksChange} checked={withDrinks}></input>
 
                         <span>Sem bebida</span>
-                        <input type="checkbox" onChange={handleObservationChange}></input>
+                        <input type="checkbox" onChange={handleWithDrinksChange} checked={!withDrinks}></input>
                     </FlexItem>
                 </Body>
 
-                <TrincaButton primary onClick={saveBarbecue}>Adicionar</TrincaButton>
+                <TrincaButton primary onClick={saveAttendant}>Adicionar</TrincaButton>
                 <TrincaButton cancel onClick={() => action(false)}>Cancelar</TrincaButton>
             </Wrapper>
         </Background>

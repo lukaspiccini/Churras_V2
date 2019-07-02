@@ -25,7 +25,7 @@ const BarbecueSummary = ({barbecue}) => {
     return (
         <Wrapper>
             {showAddAttendanceModal ? 
-                (<AttendantModal action={closeModal} />) : 
+                (<AttendantModal action={closeModal} id={barbecue._id}/>) : 
                 null
             }
 

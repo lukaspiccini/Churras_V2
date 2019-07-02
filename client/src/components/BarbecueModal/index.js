@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 
 import { Background, Wrapper, ModalTitle, Body, FlexItem, Observation, Footer } from './style'
 import TrincaInput from '../../objects/TrincaInput/index'
 import TrincaButton from '../../objects/TrincaButton/index'
+import BarbecueService from '../../services/BarbecueService'
+import AttendantService from '../../services/AttendantService'
 
 const BarbecueModal = ({action, refetch}) => {
     const [when, setWhen] = useState()
@@ -34,17 +35,19 @@ const BarbecueModal = ({action, refetch}) => {
 
     async function saveBarbecue() {
         try {
-            await axios.post('http://localhost:3000/api/barbecue',{
+            const barbecue = {
                 date: when,
                 description: why,
                 observations: observation,
                 price_with_drinks: withDrinks,
                 price_without_drinks: withoutDrinks
-            })
+            }
 
-            const result = await axios.get('http://localhost:3000/api/barbecue');
+            await BarbecueService.AddBarbecue(barbecue);
 
-            refetch(result.data);
+            const result = await AttendantService.GetAllBarbecues();
+
+            refetch(result);
             action(false);
 
             alert('Churras criado com sucesso!');

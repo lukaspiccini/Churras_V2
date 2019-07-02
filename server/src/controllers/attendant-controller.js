@@ -31,8 +31,8 @@ exports.createAttendant = async (req, res, next) => {
 
     try {
         const new_attendant = await attendant.save(attendant);
-        const barbecue = await Barbecue.findById({ _id: req.body._barbecueId }).exec();
-        
+        const barbecue = await Barbecue.findById(req.body._barbecueId).exec();
+
         barbecue.attendants.push(new_attendant);
         const result = await barbecue.save();
         

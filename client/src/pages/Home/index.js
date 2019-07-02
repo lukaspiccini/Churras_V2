@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios'
 
 import { Wrapper, Panel } from './style'
 import BarbecuesTable  from '../../components/BarbecuesTable/index'
@@ -7,6 +6,7 @@ import BarbecueModal  from '../../components/BarbecueModal/index'
 import BarbecueSummary  from '../../components/BarbecueSummary/index'
 import AttendantsTable  from '../../components/AttendantsTable/index'
 import TrincaButton  from '../../objects/TrincaButton/index'
+import BarbecueService from '../../services/BarbecueService'
 
 const Home = () => {
     const [items, setItems] = useState([])
@@ -31,8 +31,8 @@ const Home = () => {
     
     useEffect(() => {
         async function fetchBarbecues() {
-            const result = await axios('http://localhost:3000/api/barbecue');
-            setItems(result.data);
+            const result = await BarbecueService.GetAllBarbecues();
+            setItems(result);
         }
 
         fetchBarbecues();
