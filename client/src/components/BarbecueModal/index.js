@@ -4,7 +4,6 @@ import { Background, Wrapper, ModalTitle, Body, FlexItem, Observation, Footer } 
 import TrincaInput from '../../objects/TrincaInput/index'
 import TrincaButton from '../../objects/TrincaButton/index'
 import BarbecueService from '../../services/BarbecueService'
-import AttendantService from '../../services/AttendantService'
 
 const BarbecueModal = ({action, refetch}) => {
     const [when, setWhen] = useState()
@@ -45,7 +44,7 @@ const BarbecueModal = ({action, refetch}) => {
 
             await BarbecueService.AddBarbecue(barbecue);
 
-            const result = await AttendantService.GetAllBarbecues();
+            const result = await BarbecueService.GetAllBarbecues();
 
             refetch(result);
             action(false);
